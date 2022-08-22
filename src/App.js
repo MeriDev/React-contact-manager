@@ -1,34 +1,29 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from './componenets/Header';
-import Contacts from './componenets/Contacts';
-import { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css'; // eslint-disable-next-line
+import Header from './components/Header';
+import Contacts from './components/Contacts';
+import PropTypes from 'prop-types';
+import { Provider } from './context';
 
 const App = () => {
-  const [contacts, setContact] = useState([
-    {
-      id: 1,
-      name: 'meri',
-      email: 'meri@mail.com',
-      phone: '555 555 555',
-    },
-    {
-      id: 2,
-      name: 'moe',
-      email: 'moe@mail.com',
-      phone: '999 999 999 ',
-    },
-  ]);
   // RENDER
   return (
-    <div>
-      <Header branding="Contact Manager" />
-      <div className="container">
-        {contacts.map(({ id, ...otherProps }) => {
-          return <Contacts key={id} {...otherProps} />;
-        })}
+    <Provider>
+      <div className="App">
+        <Header />
+        <div className="container">
+          <Contacts />
+        </div>
       </div>
-    </div>
+    </Provider>
   );
+};
+
+Header.defaultProps = {
+  branding: 'Contact Manager',
+};
+
+Header.propTypes = {
+  branding: PropTypes.string.isRequired,
 };
 
 export default App;
