@@ -1,11 +1,18 @@
 import { useState, useContext } from 'react';
-import { Context } from '../context';
+import { Context } from '../../context';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Contact = ({ contact }) => {
   const { id, name, email, phone } = contact;
   const [toggleInfo, setToggleInfo] = useState(false);
 
   const { removeContact } = useContext(Context);
+
+  const onClickDelete = async id => {
+    await axios.delete(`http://localhost:5000/contacts/${id}`);
+    removeContact(id);
+  };
 
   return (
     <div className="card card-body mb-3">
@@ -19,8 +26,19 @@ const Contact = ({ contact }) => {
         <i
           className="fas fa-times"
           style={{ cursor: 'pointer', float: 'right', color: 'red' }}
-          onClick={() => removeContact(id)}
+          onClick={() => onClickDelete(id)}
         ></i>
+        <Link to={`contact/edit/${id}`}>
+          <i
+            className="fas fa-pencil-alt"
+            style={{
+              cursor: 'pointer',
+              float: 'right',
+              color: 'black',
+              marginRight: '1rem',
+            }}
+          ></i>
+        </Link>
       </h4>
       {toggleInfo && (
         <ul className="list-group">
